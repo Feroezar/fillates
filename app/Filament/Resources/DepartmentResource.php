@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryNilaiResource\Pages;
-use App\Filament\Resources\CategoryNilaiResource\RelationManagers;
-use App\Models\CategoryNilai;
+use App\Filament\Resources\DepartmentResource\Pages;
+use App\Filament\Resources\DepartmentResource\RelationManagers;
+use App\Models\Department;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -19,31 +20,32 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryNilaiResource extends Resource
+class DepartmentResource extends Resource
 {
-    protected static ?string $model = CategoryNilai::class;
+    protected static ?string $model = Department::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Category Nilai';
+
+    protected static ?string $navigationLabel = 'DEPARTMENT';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Card::make()
+                 Card::make()
                 ->schema([
-                    TextInput::make('name')
+                    TextInput::make('name_department')
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                        if (($get('slug') ?? '') !== Str::slug($old)) {
+                        if (($get('slug') ?? '') !== str::slug($old)) {
                             return;
                         }
                     
                         $set('slug', Str::slug($state));
                     }),
-                    TextInput::make('slug')
+                    TextInput::make('slug'),
+                    Textarea::make('description'),
                 ])
-                
             ]);
     }
 
@@ -51,8 +53,9 @@ class CategoryNilaiResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name_department'),
                 TextColumn::make('slug'),
+                TextColumn::make('description'),
             ])
             ->filters([
                 //
@@ -71,7 +74,7 @@ class CategoryNilaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCategoryNilais::route('/'),
+            'index' => Pages\ManageDepartments::route('/'),
         ];
     }
 }

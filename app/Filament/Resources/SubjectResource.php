@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryNilaiResource\Pages;
-use App\Filament\Resources\CategoryNilaiResource\RelationManagers;
-use App\Models\CategoryNilai;
+use App\Filament\Resources\SubjectResource\Pages;
+use App\Filament\Resources\SubjectResource\RelationManagers;
+use App\Models\Subject;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
@@ -19,12 +19,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryNilaiResource extends Resource
+class SubjectResource extends Resource
 {
-    protected static ?string $model = CategoryNilai::class;
+    protected static ?string $model = Subject::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Category Nilai';
+
+    protected static ?string $navigationLabel = 'Subject';
 
     public static function form(Form $form): Form
     {
@@ -32,10 +33,11 @@ class CategoryNilaiResource extends Resource
             ->schema([
                 Card::make()
                 ->schema([
+                    TextInput::make('kode'),
                     TextInput::make('name')
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                        if (($get('slug') ?? '') !== Str::slug($old)) {
+                        if (($get('slug') ?? '') !== str::slug($old)) {
                             return;
                         }
                     
@@ -43,7 +45,6 @@ class CategoryNilaiResource extends Resource
                     }),
                     TextInput::make('slug')
                 ])
-                
             ]);
     }
 
@@ -51,6 +52,7 @@ class CategoryNilaiResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('kode'),
                 TextColumn::make('name'),
                 TextColumn::make('slug'),
             ])
@@ -71,7 +73,7 @@ class CategoryNilaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCategoryNilais::route('/'),
+            'index' => Pages\ManageSubjects::route('/'),
         ];
     }
 }
