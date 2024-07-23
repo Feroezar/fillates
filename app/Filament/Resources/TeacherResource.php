@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\RelationManagers\ClassroomRelationManager;
 use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -24,8 +25,6 @@ class TeacherResource extends Resource
     protected static ?string $model = Teacher::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationLabel = 'Teacher';
 
     public static function form(Form $form): Form
     {
@@ -69,7 +68,7 @@ class TeacherResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ClassroomRelationManager::class,
         ];
     }
 
@@ -80,5 +79,16 @@ class TeacherResource extends Resource
             'create' => Pages\CreateTeacher::route('/create'),
             'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+
+        if($locale == 'id'){
+            return 'Guru';
+        }
+        else
+            return 'Teacher';
     }
 }
