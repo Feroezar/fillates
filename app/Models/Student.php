@@ -9,4 +9,7 @@ class Student extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function homeroom(){
+        return $this->hasMany(StudentHasClass::class, 'students_id', 'id');
+    }
 }

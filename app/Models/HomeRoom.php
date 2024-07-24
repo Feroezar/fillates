@@ -10,6 +10,9 @@ class HomeRoom extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function studenthome(){
+        return $this->hasMany(StudentHasClass::class, 'homerooms_id', 'id');
+    }
     public function teacher(){
         return $this->belongsTo(Teacher::class, 'teachers_id', 'id');
     }
